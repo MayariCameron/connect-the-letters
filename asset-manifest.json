@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/connect-the-letters/static/css/main.003628a8.css",
-    "main.js": "/connect-the-letters/static/js/main.829d28b4.js",
+    "main.js": "/connect-the-letters/static/js/main.224be269.js",
     "static/js/787.9ba64bc2.chunk.js": "/connect-the-letters/static/js/787.9ba64bc2.chunk.js",
-    "static/media/wordle-bank.txt": "/connect-the-letters/static/media/wordle-bank.d1e180c0e95e817784be.txt",
+    "static/media/new-word-bank.txt": "/connect-the-letters/static/media/new-word-bank.7d5b23bc15c8abfc335f.txt",
     "index.html": "/connect-the-letters/index.html",
     "main.003628a8.css.map": "/connect-the-letters/static/css/main.003628a8.css.map",
-    "main.829d28b4.js.map": "/connect-the-letters/static/js/main.829d28b4.js.map",
+    "main.224be269.js.map": "/connect-the-letters/static/js/main.224be269.js.map",
     "787.9ba64bc2.chunk.js.map": "/connect-the-letters/static/js/787.9ba64bc2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.003628a8.css",
-    "static/js/main.829d28b4.js"
+    "static/js/main.224be269.js"
   ]
 }
