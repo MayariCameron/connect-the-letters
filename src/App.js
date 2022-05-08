@@ -1,7 +1,7 @@
 import "./App.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
-import { boardDefault, generateWordSet, points } from "./Words";
+import { boardDefault, generateWordSet, points, defaultLetters } from "./Words";
 import React, { useState, createContext, useEffect } from "react";
 import GameOver from "./components/GameOver";
 
@@ -199,20 +199,26 @@ function App() {
   function wordCheck(){
     
     var wordList = [];
-    var pointString = "";
     var pairsList = [];
 
     // parse horizontally
     for (let i = 0; i < 8; i++) {
+
+      var num1 = i.toString();
+      var num2;
+
+
       var arr = [...board][i].map(function(item){
         if(item === ''){
           item = ' ';
         }
         return item;
       });
+
       // combine char array into string
       var str = arr.join('');
-      
+      var refStr = str;
+
       // replace big spaces with single space
       str = str.replace(/  +/g, ' ');
       // parse based on space
@@ -220,6 +226,19 @@ function App() {
       // remove all empty spaces
       words = words.filter(x => x !== '');
       words = words.filter(x => x.length !== 1);
+      
+      for(let n = 0; n < words.length; n++){
+        var pairs = "";
+        var m = refStr.indexOf(words[n]);
+        var p = m + words[n].length;
+        for(let q = m; q < p; q++){
+          num2 = ','.concat(q.toString()).concat(' ');
+          var pair = num1.concat(num2);
+          pairs = pairs.concat(pair);
+        }
+        pairsList.push(pairs);
+        
+      }
       // add all words to wordList
       wordList.push.apply(wordList, words);
     }
@@ -227,6 +246,10 @@ function App() {
     var transposedBoard = [...board][0].map((col, i) => [...board].map(row => row[i]));
     // parse vertically
     for (let i = 0; i < 8; i++) {
+
+      var num1 = i.toString();
+      var num2;
+
       var arr = transposedBoard[i].map(function(item){
         if(item === ''){
           item = ' ';
@@ -235,6 +258,8 @@ function App() {
       });
       // combine char array into string
       var str = arr.join('');
+      var refStr = str;
+
       // console.log(str);
       // replace big spaces with single space
       str = str.replace(/  +/g, ' ');
@@ -243,15 +268,31 @@ function App() {
       // remove all empty spaces and single letters
       words = words.filter(x => x !== '');
       words = words.filter(x => x.length !== 1);
+
+      for(let n = 0; n < words.length; n++){
+        var pairs = "";
+        var m = refStr.indexOf(words[n]);
+        var p = m + words[n].length;
+        for(let q = m; q < p; q++){
+          num2 = q.toString();
+          var num1Alt = ','.concat(num1).concat(' ');
+          var pair = num2.concat(num1Alt);
+          pairs = pairs.concat(pair);
+        }
+        pairsList.push(pairs);
+      }
+
       // add all words to wordList
       wordList.push.apply(wordList, words);
     }
- 
+    correctPointList = [];
     var bool = true;
     for(let i = 0; i < wordList.length; i++){
-      //console.log(wordList[i])
-      //console.log(array.includes(wordList[i].toLowerCase()));
-      bool = bool && array.includes(wordList[i].toLowerCase());
+      var isValid = array.includes(wordList[i].toLowerCase());
+      if(isValid){
+        correctPointList.push(pairsList[i])
+      }
+      bool = bool && isValid;
     }
 
     //console.log(correctPointList);

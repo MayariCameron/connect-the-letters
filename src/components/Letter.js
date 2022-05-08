@@ -23,14 +23,9 @@ function Letter({ letterPos, attemptVal}) {
         highlighted = (currAttempt.attempt !== attemptVal && currAttempt.letter === letterPos);
     }
     var selected = (currAttempt.attempt === attemptVal && currAttempt.letter === letterPos);
-    var corrected;
-    if (correctPointList.length > 0){
-        corrected = true;
-    } else {
-        corrected = false;
-    }
+    var corrected = false;
     for (let i = 0; i < correctPointList.length; i++){
-        corrected = corrected && (correctPointList[i].indexOf(pointAlt) >= 0)
+        corrected = corrected || (correctPointList[i].indexOf(pointAlt) >= 0)
     }
     function getState() {
         if (fixed && !highlighted && !selected){
