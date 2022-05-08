@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/connect-the-letters/static/css/main.003628a8.css",
+    "main.js": "/connect-the-letters/static/js/main.829d28b4.js",
+    "static/js/787.9ba64bc2.chunk.js": "/connect-the-letters/static/js/787.9ba64bc2.chunk.js",
+    "static/media/wordle-bank.txt": "/connect-the-letters/static/media/wordle-bank.d1e180c0e95e817784be.txt",
+    "index.html": "/connect-the-letters/index.html",
+    "main.003628a8.css.map": "/connect-the-letters/static/css/main.003628a8.css.map",
+    "main.829d28b4.js.map": "/connect-the-letters/static/js/main.829d28b4.js.map",
+    "787.9ba64bc2.chunk.js.map": "/connect-the-letters/static/js/787.9ba64bc2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.003628a8.css",
+    "static/js/main.829d28b4.js"
+  ]
+}
