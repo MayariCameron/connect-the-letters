@@ -1,13 +1,14 @@
 import "./App.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
-import { boardDefault, generateWordSet, wordArray, points } from "./Words";
+import { boardDefault, generateWordSet, points } from "./Words";
 import React, { useState, createContext, useEffect } from "react";
 import GameOver from "./components/GameOver";
 
 export const AppContext = createContext();
 export var horizontal = true;
 export var correctPointList = [];
+export var wordArray;
 var validWords = false;
 var connect = false;
 
@@ -26,6 +27,7 @@ function App() {
       setCorrectWord(words.todaysWord);
     });
   }, []);
+  var array = Array.from(wordSet);
 
   const onSelectSquare = (att, lett) => {
     if (currAttempt.attempt === att && currAttempt.letter === lett) {
@@ -147,13 +149,13 @@ function App() {
  
   const onSelectLetter = (key) => {
     if(horizontal){
-        if (currAttempt.letter > 7){
+        if (currAttempt.letter === 7){
           const newBoard = [...board];
-          newBoard[currAttempt.attempt + 1][0] = key;
+          newBoard[currAttempt.attempt][7] = key;
           setBoard(newBoard);
           setCurrAttempt({
             attempt: currAttempt.attempt + 1,
-            letter: 1,
+            letter: 0,
           });
         } 
         else {
@@ -166,12 +168,12 @@ function App() {
         });
       }
     } else {
-      if (currAttempt.attempt > 7){
+      if (currAttempt.attempt === 7){
         const newBoard = [...board];
-        newBoard[0][currAttempt.letter + 1] = key;
+        newBoard[7][currAttempt.letter] = key;
         setBoard(newBoard);
         setCurrAttempt({
-          attempt: 1,
+          attempt: 0,
           letter: currAttempt.letter + 1,
         });
       } 
@@ -194,111 +196,65 @@ function App() {
   };
   
   // maybe make the same format as other functions
-  var wordCheck = () => {
-    var previousLetter = "";
-    var currentLetter = "";
+  function wordCheck(){
     
-    var word = "";
     var wordList = [];
     var pointString = "";
     var pairsList = [];
 
     // parse horizontally
     for (let i = 0; i < 8; i++) {
-      previousLetter = "";
-      currentLetter = "";
-      for (let j = 0; j < 8; j++){
-        currentLetter = board[i][j];
-        var num1 = i.toString();
-        var num2 = j.toString();
-        num2 = ",".concat(num2);
-        var point =num1.concat(num2);
-        if(previousLetter !== "" && currentLetter === ""){
-          if(word.length > 1){
-            word.concat(currentLetter);
-            pointString.concat(point);
-            pairsList.push(pointString);
-            pointString = "";
-            wordList.push(word);
-            word = "";
-          }
-        } else if (j === 0) {
-          word.concat(currentLetter);
-          pointString.concat(point);
-        } else if (j === 7) {
-          word.concat(currentLetter);
-          pointString.concat(point);
-          pairsList.push(pointString);
-          pointString = "";
-          wordList.push(word);
-          word = "";
-        } else if (previousLetter !== "" && currentLetter !== ""){
-          word.concat(currentLetter);
-          pointString.concat(point);
-        } else if (previousLetter === "" && currentLetter !== ""){
-          word.concat(currentLetter);
-          pointString.concat(point);
-        } else if (previousLetter === "" && currentLetter === ""){
-          word.concat(currentLetter);
-          pointString.concat(point);
-        } 
-        previousLetter = board[i][j]
-      }
+      var arr = [...board][i].map(function(item){
+        if(item === ''){
+          item = ' ';
+        }
+        return item;
+      });
+      // combine char array into string
+      var str = arr.join('');
+      
+      // replace big spaces with single space
+      str = str.replace(/  +/g, ' ');
+      // parse based on space
+      var words = str.split(' ');
+      // remove all empty spaces
+      words = words.filter(x => x !== '');
+      words = words.filter(x => x.length !== 1);
+      // add all words to wordList
+      wordList.push.apply(wordList, words);
     }
 
-    previousLetter = "";
-    currentLetter = "";
-     word = "";
-     wordList = [];
-     pointString = "";
+    var transposedBoard = [...board][0].map((col, i) => [...board].map(row => row[i]));
     // parse vertically
     for (let i = 0; i < 8; i++) {
-      previousLetter = "";
-      currentLetter = "";
-      for (let j = 0; j < 8; j++){
-        currentLetter = board[j][i];
-        num1 = i.toString();
-        num1 = ",".concat(num1);
-        num2 = j.toString();
-        point = num2.concat(num1);
-        if(previousLetter !== "" && currentLetter === ""){
-          if(word.length > 1){
-            pairsList.push(pointString);
-            pointString = "";
-            wordList.push(word);
-            word = "";
-          }
-        } else if (i === 0) {
-          pointString.concat(point);
-          word.concat(currentLetter);
-        } else if (i === 7) {
-          word.concat(currentLetter);
-          pointString.concat(point);
-          pairsList.push(pointString);
-          pointString = "";
-          wordList.push(word);
-          word = "";
-        } else if (previousLetter !== "" && currentLetter !== ""){
-          pointString.concat(point);
-          word.concat(currentLetter);
-        } else if (previousLetter === "" && currentLetter !== ""){
-          pointString.concat(point);
-          word.concat(currentLetter);
-        } else if (previousLetter === "" && currentLetter === ""){
-          word.concat(currentLetter);
-        } 
-        previousLetter = board[j][i]
-      }
+      var arr = transposedBoard[i].map(function(item){
+        if(item === ''){
+          item = ' ';
+        }
+        return item;
+      });
+      // combine char array into string
+      var str = arr.join('');
+      // console.log(str);
+      // replace big spaces with single space
+      str = str.replace(/  +/g, ' ');
+      // parse based on space
+      var words = str.split(' ');
+      // remove all empty spaces and single letters
+      words = words.filter(x => x !== '');
+      words = words.filter(x => x.length !== 1);
+      // add all words to wordList
+      wordList.push.apply(wordList, words);
     }
+ 
     var bool = true;
-    correctPointList = [];
-
     for(let i = 0; i < wordList.length; i++){
-      bool = bool && (checkBank(wordList[i]));
-      if(checkBank(wordList[i])){
-        correctPointList.push(pairsList[i]);
-      }
+      //console.log(wordList[i])
+      //console.log(array.includes(wordList[i].toLowerCase()));
+      bool = bool && array.includes(wordList[i].toLowerCase());
     }
+
+    //console.log(correctPointList);
     if (wordList.length > 0){
       validWords = bool;
     } else {
@@ -306,30 +262,23 @@ function App() {
     }
   }
 
-  function checkBank(word){
-    return (wordArray.indexOf(word) >= 0);
-  }
- 
   function checkConnect(){
-    
     var start = points[0];
-    var bools = [];
+    var bools = true;
     for (let i = 1; i < points.length; i++) {
-      var newBoard = formatBoard(board, points[i]);
+      var newBoard = formatBoard([...board], points[i]);
+      newBoard[start[0]][start[1]] = 'Start';
+      
       if(findShortestPath(start, newBoard) !== false){
-        bools.push(true);
+        bools = bools && true;
       } else {
-        bools.push(false);
+        bools = bools && false;
       }
     }
-
-    connect = !bools.includes(false);
-    setCurrAttempt({
-      attempt: currAttempt.attempt, letter: currAttempt.letter
-    });
+    connect = bools;
   }
 
-  function formatBoard(board, goal){
+  var formatBoard = function(board, goal){
     var newBoard = [];
     var x = goal[0];
     var y = goal[1];
@@ -339,7 +288,7 @@ function App() {
         if(x === i && y === j) {
           row.push('Goal');
         } else if(board[i][j] !== ''){
-          row.push('Valid');
+          row.push('Empty');
         } else if (board[i][j] === '') {
           row.push('Obstacle');
         }

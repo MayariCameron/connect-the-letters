@@ -1,5 +1,4 @@
-import wordBank from "./wordle-bank.txt";
-
+import wordBank from "./new-word-bank.txt";
 const rowLength = 8;
 
 function generateRandomLetters() {
@@ -70,7 +69,6 @@ function getRandomLetters() {
 
 export const defaultLetters = getRandomLetters();
 
-
 export const generateWordSet = async () => {
   let wordSet;
   let todaysWord;
@@ -82,13 +80,7 @@ export const generateWordSet = async () => {
       wordSet = new Set(wordArr);
     });
   return { wordSet, todaysWord };
-};
+}; 
 
-var wordArr;
-fetch(wordBank)
-    .then((response) => response.text())
-    .then((data) => {
-      wordArr = data.split("\n");
-    });
 
-export const wordArray = wordArr;
+
