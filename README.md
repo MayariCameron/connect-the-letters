@@ -4,6 +4,7 @@ Mayari Cameron Flores
 Digital Media Project
 
 Connect the Letters
+
 The first version, future iterations will be uploaded on website rather github
 
 Instructions:
